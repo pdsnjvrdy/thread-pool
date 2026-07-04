@@ -23,7 +23,7 @@ typedef struct {
     int stop;
 } thread_pool_t;
 
-// API
+// API 
 thread_pool_t* pool_create(int num_threads);
 void pool_submit(thread_pool_t *pool, task_func func, void *arg);
 void pool_destroy(thread_pool_t *pool);
