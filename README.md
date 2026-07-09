@@ -30,6 +30,8 @@ thread-pool/
 # Build everything
 make
 
+This project was developed and tested on Ubuntu under WSL2. It requires a C compiler, GNU Make, and a POSIX‑compatible environment (Linux, WSL2, or similar).
+
 # Run correctness test (verifies graceful shutdown drains all tasks)
 make test_drain && ./test_drain
 
@@ -157,11 +159,12 @@ The same design can be integrated into an HTTP server, a database connection poo
 ## Verification
 
 To independently verify the claims in this project:
-1. Clone the repository and run `make` to build all targets.
-2. **Correctness:** Run `make test_drain && ./test_drain`.  
+1. **Prerequisites:** Linux or WSL2, a C compiler such as `gcc`, POSIX threads support, and GNU Make.
+2. Clone the repository and run `make` to build all targets.
+3. **Correctness:** Run `make test_drain && ./test_drain`.  
    The program submits 100 tasks, immediately calls `pool_destroy`, and prints `All tasks drained correctly.` – confirming no task is lost on shutdown.
-3. **Performance:** Run `make bench && ./bench_sum`.  
+4. **Performance:** Run `make bench && ./bench_sum`.  
    The benchmark executes 10,000 CPU-bound tasks using the thread pool with 8 workers and compares it against creating a new thread for each task. On the reference environment, the measured output was 3.830 s for the pool version, 30.391 s for the naive thread-per-task version, and a 7.93× speedup. 
-4. Compare your terminal output with the screenshots in `screenshots/`. Exact timings may vary depending on the machine, but the drain test should always pass and the thread pool should show a significant speedup over naive thread creation.
+5. Compare your terminal output with the screenshots in `screenshots/`. Exact timings may vary depending on the machine, but the drain test should always pass and the thread pool should show a significant speedup over naive thread creation.
 
 ---
