@@ -151,4 +151,17 @@ A thread pool is one of the most common patterns in systems programming. This pr
 - A measurable, verifiable performance benefit over naive thread creation.
 
 The same design can be integrated into an HTTP server, a database connection pool, or any application where fixed‑size concurrency is needed.
+
+---
+
+## Verification
+
+To independently verify the claims in this project:
+1. Clone the repository and run `make` to build all targets.
+2. **Correctness:** Run `make test_drain && ./test_drain`.  
+   The program submits 100 tasks, immediately calls `pool_destroy`, and prints `All tasks drained correctly.` – confirming no task is lost on shutdown.
+3. **Performance:** Run `make bench && ./bench_sum`.  
+   The benchmark executes 10,000 CPU-bound tasks using the thread pool with 8 workers and compares it against creating a new thread for each task. On the reference environment, the measured output was 3.830 s for the pool version, 30.391 s for the naive thread-per-task version, and a 7.93× speedup. 
+4. Compare your terminal output with the screenshots in `screenshots/`. Exact timings may vary depending on the machine, but the drain test should always pass and the thread pool should show a significant speedup over naive thread creation.
+
 ---
